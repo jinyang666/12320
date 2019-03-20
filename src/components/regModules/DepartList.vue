@@ -25,24 +25,6 @@
 				<p>{{item.deptName}}</p>
 			</li>
 		</ul>	
-		<ul class="departList">
-			<h6>B</h6>
-			<li v-for="(item,index) in departList" v-bind:index="index" :key="index" v-on:click="selectDepart(index)">
-				<p>{{item.deptName}}</p>
-			</li>
-		</ul>	
-		<ul class="departList">
-			<h6>C</h6>
-			<li v-for="(item,index) in departList" v-bind:index="index" :key="index" v-on:click="selectDepart(index)">
-				<p>{{item.deptName}}</p>
-			</li>
-		</ul>	
-		<ul class="departList">
-			<h6>D</h6>
-			<li v-for="(item,index) in departList" v-bind:index="index" :key="index" v-on:click="selectDepart(index)">
-				<p>{{item.deptName}}</p>
-			</li>
-		</ul>
 		<!-- 右侧导航栏 -->
 		<div class="position_box" @click.stop="stop">
 			<div v-for="(value,index) in letterList" @click.stop="scroll_top(index)" :key="value" :class="{'ac':value==acLetter}">{{value}}</div>
@@ -71,9 +53,6 @@ export default {
             	{
             		deptName:"内科",
             	},
-            	{
-            		deptName:"内科",
-            	}
            	],
            	letterList:['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'],
            	bigSwitch:false,
