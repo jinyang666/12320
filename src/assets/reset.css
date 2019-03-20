@@ -1,0 +1,60 @@
+*{margin:0;padding:0;-webkit-tap-highlight-color:rgba(0,0,0,0) }
+li{list-style:none}
+a{text-decoration:none;-webkit-touch-callout:none;background-color:transparent}
+i{font-style:normal;}
+html{font-family: "微软雅黑", 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}
+html,body{-webkit-user-select:none;user-select:none; font-size: 15px;}
+template{display:none}
+img{border:0;-webkit-touch-callout:none;}
+hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}
+a,button,input,optgroup,select,textarea{-webkit-tap-highlight-color:rgba(0,0,0,0);}
+button,input,optgroup,select,textarea{color:inherit;font:inherit;margin:0;-webkit-appearance:normal;outline:none;line-height:normal}
+button{overflow:visible;border:none;background-color: transparent;}
+button,select{text-transform:none}
+button[disabled],html input[disabled]{cursor:default}
+input{border:none;}
+fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0}
+textarea{overflow:auto}
+optgroup{font-weight:bold}
+table{border-collapse:collapse;border-spacing:0}
+h1,h2,h3,h4,h5,h6{font-weight:normal;}
+*,*:after,*:before{  -webkit-box-sizing:border-box;  }
+.clearFloat:after{  content: ''; display: block;  height:0;  width:0;clear: both;}
+.empty_list{
+    margin-top: 60px;
+    text-align: center;
+}
+.empty_list img{
+    width: 70px;
+}
+.empty_list p{
+    line-height: 25px;
+    font-size: 16px;
+    color: #333;
+}
+/* 自定义弹窗样式 layer*/
+.layui-m-layer .popuo-login{
+    width: 85% !important;
+}
+.layui-m-layer .popuo-login .layui-m-layerbtn{
+    background-color: #fff;
+    color: #59bec8 !important;
+    font-size:16px !important;
+    border-top: 1px solid #e8e8e8;
+}
+.popuo-login .layui-m-layerbtn span{
+    font-size:16px !important;
+}
+.popuo-login .layui-m-layerbtn span[yes]{
+    color: #59bec8 !important;
+    font-size:16px !important;
+}
+.popuo-login .layui-m-layercont{
+    padding:30px 20px;
+    font-size: 16px;
+    color: #333;
+}
+.popuo-login .layui-m-layerbtn span[no]{
+    border-right: 1px solid #e8e8e8 !important;
+}
