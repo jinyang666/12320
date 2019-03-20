@@ -9,14 +9,13 @@
 			</ul>
 		</div>
 	</div>
-
 </template>
 <script>
 	export default{
 		name:"searchHospital",
 		data(){
 			return{
-
+						
 			}
 		},
 		methods:{
