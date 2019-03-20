@@ -6,26 +6,22 @@
                 <img src="../../assets/imgs/doctorheader.png" alt="头像">
             </div>
             <div class="name_mobile">
-                <h4>轻舞飞扬</h4>
-                <p>当前登录：{{mobile | hiddenMobile}}</p>
+                <h4>{{$store.state.userInfor.name}}</h4>
+                <p>当前登录：{{hiddenMobile}}</p>
             </div>
             <i class="iconfont icon-youjiantou"></i>
         </div>
         <!-- 功能模块 -->
         <ul class="function_list clearFloat">
-            <li>
-                挂号订单
-            </li>
-            <li>
-                缴费订单
-            </li>
+            <li>挂号订单</li>
+            <li>缴费订单</li>
         </ul>
-        <!-- 就诊人列表 -->
+        <!-- 就诊人列表 渲染-->
         <div class="middle_box">
             <div class="title">就诊人</div>
             <ul class="patient_list">
-                <li class="item_list clearFloat" style="margin-top:4px;">
-                    <div class="patient_left" @click="routerTopatientInfor">*王海转<span>（1张卡）</span></div>
+                <li class="item_list clearFloat" style="margin-top:4px;" :key="index" v-for="(item , index) in $store.state.patientList">
+                    <div class="patient_left" @click="routerTopatientInfor">{{item.patientName}}<span>（{{item.number}}张卡）</span></div>
                     <div class="bindCard_right" @click="routerTobindCard">绑卡 <i class="iconfont icon-youjiantou" style="font-size:14px;"></i></div>
                 </li>
             </ul>

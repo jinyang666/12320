@@ -63,13 +63,12 @@ export default {
         reg(){
             window.location.href="./registration.html#/hospitalList"
         }
-
     },
     mounted:function(){
         
     },
     beforeCreate () {
-
+        
     },
 }
 </script>

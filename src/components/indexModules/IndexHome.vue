@@ -49,7 +49,26 @@ export default {
         }
     },
     mounted:function(){
-        
+        this.$axios({
+            method:'post',
+            url:this.URLS.get_myCenter,
+            params:{"mobile":"13716242600"},
+            headers:{
+                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+            }
+        }).then(
+            (res)=> {
+                if(res.data.status==200){
+                    this.$store.commit('setUserInfor',res.data.data.user)
+                }else{
+                    this.$toast("res.data.msg");
+                }
+            }
+        ).catch(
+            (err)=>{             
+                this.$toast("获得就诊人列表失败!");
+            }
+        )
     },
     beforeCreate () {
         document.querySelector('body').setAttribute('style', 'background-color:#f0f0f0;')

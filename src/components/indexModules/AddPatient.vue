@@ -3,15 +3,15 @@
 		<ul class="fillList">
 	        <li class="clearFloat content">
 	            <span>姓名</span>
-	            <input class="inputType1" maxlength="6" type="text" placeholder="请填写本人真实姓名">
+	            <input class="inputType1" v-model.trim="patientInfor.patientName" maxlength="6" type="text" placeholder="请填写本人真实姓名">
 	        </li>
 	        <li class="clearFloat content">
 	            <span>证件类型</span>
-	            <p>身份证</p>
+	            <p>{{patientInfor.idType}}</p>
 	        </li>
 	        <li class="clearFloat content">
 	            <span>证件号码</span>
-	            <input class="inputType1" type="text"  placeholder="请填写本人的证件号码">
+	            <input class="inputType1" type="text" v-model.trim="patientInfor.idNum" placeholder="请填写本人的证件号码">
 	        </li>
 	        <li class="clearFloat content">
 	            <span>常驻城市</span>
@@ -20,7 +20,7 @@
 	        </li>
 	    </ul>
 	    <div class="btnBox">
-			<button class="public_btn btn">保存</button>
+			<button class="public_btn btn" @touchstart="addPatient">保存</button>
 		</div>
 		<div class="middle_line">
 			<span style="margin-right:6px;"></span>或<span style="margin-left:6px;"></span>
@@ -35,7 +35,13 @@ export default {
     name: 'My',
     data:function(){
         return {
-           
+            patientInfor:{
+                patientName:"",
+                idNum:"",
+                city:"",
+                idType:"身份证",
+                id:"",
+            }
         }        
     },
     props:{
@@ -44,7 +50,35 @@ export default {
         }
     },
     methods:{
-        
+        addPatient(){
+            this.$indicator.open({
+                text: '添加中',
+                spinnerType: 'snake'
+            });
+            this.$axios({
+                method:'post',
+                url:this.URLS.login_in,
+                params:this.patientInfor,
+                headers:{
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                }
+            }).then(
+                (res)=> {
+                    this.$indicator.close();
+                    if(res.data.status==200){
+                        this.$toast("就诊人添加成功");
+                        this.$store.commit('addPatient',{name:this.patientInfor.patientName,idNum:this.patientName.idNum,number:"0"})
+			            this.$router.go(-1); 
+                    }
+                }
+            ).catch(
+                (error)=>{
+                    this.$indicator.close();
+                    this.$toast(error.response.data.message)
+                }
+            )
+			
+		}
     },
     mounted:function(){
         

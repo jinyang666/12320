@@ -4,19 +4,21 @@ import App from './index.vue'
 
 import urls from '../../components/Urls.vue'
 
+import Mint from 'mint-ui'
+
 import '../../assets/reset.css'
 
 import '../../assets/font/iconfont.css'
 
-import axios from 'axios'
+import 'mint-ui/lib/style.css'
 
-import layer from 'vue2-layer-mobile'
+import axios from 'axios'
 
 Vue.prototype.$axios = axios
 
 Vue.prototype.URLS = urls;
 
-Vue.use(layer)
+Vue.use(Mint);
 
 Vue.config.productionTip = false
 

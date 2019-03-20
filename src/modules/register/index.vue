@@ -1,93 +1,168 @@
 <template>
-    <div class="login">
-        <header><h2>加入12320</h2></header>
+    <div class="main">
+        <header><h2>加入我们&nbsp;就医无忧</h2></header>
         <div class="registerBox">
             <p>
                 <span class="hintInfor">手机</span>
-                <input type="tel" v-model.trim="mobile" placeholder="请填写手机号码" class="register_input">
+                <input type="tel" placeholder="手机号" v-model="mobile" class="register_input">
             </p>
             <p style="position: relative;">
                 <span class="hintInfor">短信验证码</span>
-                <input type="tel" v-model.trim="checkCode" placeholder="短信验证码" class="register_input">
-                <button class="getCode">获取验证码</button>
+                <input type="tel" placeholder="短信验证码" v-model="mobileCode" class="register_input">
+                <button class="getCode" @click="getCode" :disabled="codeState">{{codeText}}</button>
+            </p>
+            <p>
+                <span class="hintInfor">登录密码</span>
+                <input type="password" placeholder="密码由8-16位字母、数字、字符组合组成" v-model="password" class="register_input">
             </p>
         </div>
         <div class="register_box">
             <button class="registerBtn" @click="register">注册</button>
         </div>
-        <footer>注册即代表阅读并同意<a href="./service-protocol.html">服务条款</a></footer>
     </div>
 </template>
 <script>
+import md5 from 'js-md5';
 export default {
     name: 'Register',
     data:function(){
         return {
             mobile:"",
-            checkCode:"",
+            mobileCode:"",
             password:"",
-            sendVal: false,
+            codeState:false,
+            codeText:"获得验证码",
+            timerObj:null,
+            openId:"",
         }        
     },
     methods:{
-        //注册事件
-        register:function(){
-            var _this=this;
+        //跳转注册信息
+        lookprotocol(){
+            this.$router.push({
+                path:"/registerProtocol"
+            })
+        },
+        //获得短信验证码
+        getCode(){
             if(!this.mobile){
-                this.$layer.closeAll();
-                this.$layer.msg("请输入手机号!");
-                return false;
+                this.$toast('请输入手机号');
+                return false
             }
-            if(!this.checkCode){
-                this.$layer.closeAll();
-                this.$layer.msg("请输入短信验证码!");
-                return false;
+            if(!/^1[34578]\d{9}$/.test(this.mobile)){
+                this.$toast('手机号码格式错误');
+                return false
             }
-            this.$layer.open({type:2,content:"注册中...",shadeClose:false,});
+            this.codeState=true;
+            this.codeText="验证码获取中"
             this.$axios({
                 method:'post',
-                url:'/prescription-service/Userlogin/register',
+                url:this.URLS.get_mobile_code,
                 params:{
-                    mobile:this.mobile,
-                    password:md5(this.password),
-                    checkCode:this.checkCode,
-                    unionid:this.$route.query.unionid,
-                    openId:this.$route.query.openId
+                    mobile:Utils.encrypt(this.mobile,this.URLS.aesPassword),
                 },
                 headers:{'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'}
             }).then(
                 (res)=> {
-                    _this.$layer.closeAll();             
+                    this.$layer.closeAll();
                     if(res.data.state==200){
-                        _this.TOOL.setCookie("mobile",this.mobile);
-                        _this.$layer.msg("注册成功!");
-                    }else if(res.data.state==500){
-                        _this.$layer.msg(res.data.msg)
+                        this.timerCode();
+                        this.$toast('验证码发送成功');
+                    }else{
+                        this.codeState=false
+                        this.codeText="获得验证码"
+                        this.$toast(res.data.msg)   
                     }
+                }
+            ).catch(
+                (err)=>{
+                    this.codeState=false
+                    this.codeText="获得验证码"
+                    this.$toast("验证码获取失败");
+                }
+            )     
+        },
+        //注册register
+        register(){
+            // if(!this.mobile){
+            //     this.$toast("请输入手机号")
+            //     return false
+            // }
+            // if(!this.mobileCode){
+            //     this.$toast("请输入短信验证码")
+            //     return false
+            // }
+            // if(!this.password){
+            //     this.$toast("请输入密码")
+            //     return false
+            // }
+            // if(!/^[0-9a-zA-Z\-!+_@#$%^&*=.?]{8,16}$/.test(this.password)){
+            //     this.$toast("密码格式错误")
+            //     return false
+            // }
+            this.$indicator.open({
+                text: '注册中...',
+                spinnerType: 'snake'
+            });
+            this.$axios({
+                method:'post',
+                url:this.URLS.reg_in_url,
+                params:{
+                    mobile:this.mobile,
+                    password:md5(this.password),
+                    // mobileCode:this.mobileCode,
+                    // openId:this.openId
+                },
+                headers:{'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'}
+            }).then(
+                (res)=> {
+                    this.$indicator.close();
+                    if(res.data.status==200){
+                        this.codeState=true
+                        this.$toast("注册成功");
+                        window.location.href="./index.html#/home"
+                    }else{
+                        this.codeState=false
+                        this.$toast("res.data.msg");
+                    }
+                }
+            ).catch(
+                (err)=>{
+                    this.$indicator.close();                 
+                    this.codeState=false
+                    this.codeText="获得验证码"
+                    this.$toast("注册失败");
                 }
             )
         },
+        //获得验证码定时
+        timerCode(){
+            var that=this,num=60;
+            that.timerObj=setInterval(()=>{
+                that.codeText=num+"s"
+                num--
+                if(num<0){
+                    that.codeState=false
+                    that.codeText="获得验证码"
+                    clearInterval(that.timerObj)
+                }
+            },1000)
+        }
     },
-    mounted(){
-        let h=document.documentElement.clientHeight-document.querySelector(".registerBtn").offsetTop-126;
-        document.querySelector("footer").style.marginTop=h+"px";
-    },
-    beforeCreate () {
-        document.querySelector('body').setAttribute('style', 'background-color:#fff;');
-        document.body.addEventListener('touchstart', function () {});
-
-    }
 }
 </script>
 <style scoped>
-    .login{
-        padding-top: 30px;
+    .main{
+        height: 100vh;
+        background-color: #fff;
+    }
+    header{
+        padding-top:30px;
     }
     header h2{
         color:#424242;
-        font-size: 30px;
+        font-size: 32px;
         padding:0 8vw;
-        margin-top: 50px;
         padding-bottom:50px;
     }
     .registerBox{
@@ -116,7 +191,7 @@ export default {
         color:#66ccba;
     }
     .register_box{
-        padding-top: 30px;
+        padding-top: 50px;
         text-align: center;
     }
     .registerBtn{
@@ -139,7 +214,7 @@ export default {
         font-size: 16px;
         top: 37px;
         right: 0;
-        background-color: #fff;
+        text-align: center;
     }
     .getCode:disabled{
         color: #a7a7a7;
@@ -160,3 +235,4 @@ export default {
         margin-left: 3px
     }
 </style>
+

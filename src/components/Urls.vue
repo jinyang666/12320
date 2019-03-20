@@ -1,12 +1,12 @@
 <script type="text/javascript">
     //let basePath = "/WebProject/app/";
+    let basePath = "/dcloud-provider-uac";
 
-    let basePath = "/dcloud-auth/auth/";
-    const Login_in_url = basePath + 'form'; //登录几口
+    const reg_in_url = basePath + '/outUser/reg/saveReg'; //登录几口
 
-    const unFinancingListRongYingPage = basePath + 'unFinancingListRongYingPage'; //获得可以融资列表
+    const get_myCenter = basePath + '/pfPatient/myCenter'; //就诊人 用户列表
 
-    const financingToRongYing = basePath + 'financingToRongYing'; //融资几口调用
+    const login_in = '/dcloud-auth/auth/form'; //登录接口
 
     const myFinancingRecordRongWin = basePath + 'myFinancingRecordRongWin'; //获得可以融资列表
 
@@ -15,17 +15,14 @@
     const uploadImg= basePath + 'uploadImg'; //上传图片接口
 
     const findAllBranchsByLevel=basePath + 'findAllBranchsByLevel'; 
-
-    const userRegister= basePath+ "userRegister"
     
     export default {
-        Login_in_url,
-        unFinancingListRongYingPage,
-        financingToRongYing,
+        reg_in_url,
+        get_myCenter,
+        login_in,
         myFinancingRecordRongWin,
         checkRegister,
         uploadImg,
         findAllBranchsByLevel,
-        userRegister
     }   
 </script>
