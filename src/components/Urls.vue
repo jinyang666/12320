@@ -18,6 +18,8 @@
 
     const userRegister= basePath+ "userRegister"
     
+    const userRegister2= basePath+ "userRegister2"
+
     export default {
         Login_in_url,
         unFinancingListRongYingPage,
