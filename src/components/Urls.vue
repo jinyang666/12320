@@ -15,8 +15,6 @@
     const uploadImg= basePath + 'uploadImg'; //上传图片接口
 
     const findAllBranchsByLevel=basePath + 'findAllBranchsByLevel'; 
-
-    const userRegister= basePath+ "userRegister"
     
     export default {
         Login_in_url,
