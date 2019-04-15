@@ -39,12 +39,6 @@ export default {
             urlData:"",
         }        
     },
-    props: {
-
-    },
-    components:{
-       
-    },
     methods:{
         //登录接口
         login:function(){
@@ -52,7 +46,7 @@ export default {
                 this.$toast("请输入手机号")
                 return false;
             }
-            if(!(/^1[34578]\d{9}$/.test(this.mobile))){ 
+            if(!(/^1[34578]\d{9}$/.test(this.mobile))){
                 this.$toast("手机号码有误，请重填")
                 return false; 
             } 

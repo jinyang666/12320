@@ -19,33 +19,17 @@
 			</div>
 		</header>
 		<!-- 科室列表 -->
-		<ul class="departList">
-			<h6>A</h6>
-			<li v-for="(item,index) in departList" v-bind:index="index" :key="index" v-on:click="selectDepart(index)">
-				<p>{{item.deptName}}</p>
+		<ul class="departList" v-for="item in departList" :key="item.letterIndex">
+			<h6>{{item.letterIndex}}</h6>
+			<li v-for="(depart,departIndex) in item.list" v-bind:index="departIndex" :key="depart.departId" v-on:click="selectDepart(departIndex)">
+				<p>{{depart.name}}</p>
 			</li>
 		</ul>	
-		<ul class="departList">
-			<h6>B</h6>
-			<li v-for="(item,index) in departList" v-bind:index="index" :key="index" v-on:click="selectDepart(index)">
-				<p>{{item.deptName}}</p>
-			</li>
-		</ul>	
-		<ul class="departList">
-			<h6>C</h6>
-			<li v-for="(item,index) in departList" v-bind:index="index" :key="index" v-on:click="selectDepart(index)">
-				<p>{{item.deptName}}</p>
-			</li>
-		</ul>	
-		<ul class="departList">
-			<h6>D</h6>
-			<li v-for="(item,index) in departList" v-bind:index="index" :key="index" v-on:click="selectDepart(index)">
-				<p>{{item.deptName}}</p>
-			</li>
-		</ul>
-		<!-- 右侧导航栏 -->
-		<div class="position_box" @click.stop="stop">
-			<div v-for="(value,index) in letterList" @click.stop="scroll_top(index)" :key="value" :class="{'ac':value==acLetter}">{{value}}</div>
+		<!--字母列表导航栏-->
+		<div class="position_box" @click.stop="stop" @touchstart="scroll_touchstart($event)" @touchmove="scroll_touchmove($event)">
+            <!-- 右侧字母列表 @touchstart.stop="scroll_touchstart(index,item.letterIndex)" -->
+			<li v-for="(item,index) in departList"  :key="item.index" :class="{'ac':item.letterIndex==acLetter}">{{item.letterIndex}}</li>
+            <!-- 左侧字母放大镜 -->
 			<div class="left_big" v-show="bigSwitch" :style="{'top':letterTop+'px'}">
 				{{acLetter}}<span class="triangle_border_right"></span>
 			</div>
@@ -54,7 +38,7 @@
 </template>
 <script>
 export default {
-    name: 'My',
+    name: 'DepartList',
     data:function(){
         return {
         	hospitalName:"内蒙古中医院",
@@ -62,24 +46,32 @@ export default {
         	address:"包头",
         	telephone:"110",
             departList:[
-            	{
-            		deptName:"内科",
-            	},
-            	{
-            		deptName:"内科",
-            	},
-            	{
-            		deptName:"内科",
-            	},
-            	{
-            		deptName:"内科",
-            	}
-           	],
-           	letterList:['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'],
-           	bigSwitch:false,
-           	acLetter:"A",
-           	letterTime:null,
-           	letterTop:"-14",
+                {letterIndex:"A",list:[
+                    {name:"A科室1",departId:"1"},
+                    {name:"A科室2",departId:"2"},
+                    {name:"A科室3",departId:"3"},
+                    {name:"A科室4",departId:"4"},
+                    {name:"A科室5",departId:"5"}
+                ]},
+                {letterIndex:"B",list:[
+                    {name:"B科室1",departId:"1"},
+                    {name:"B科室2",departId:"2"},
+                    {name:"B科室3",departId:"3"},
+                    {name:"B科室4",departId:"4"},
+                    {name:"B科室5",departId:"5"}
+                ]},
+                {letterIndex:"C",list:[
+                    {name:"C科室1",departId:"1"},
+                    {name:"C科室2",departId:"2"},
+                    {name:"C科室3",departId:"3"},
+                    {name:"C科室4",departId:"4"},
+                    {name:"C科室5",departId:"5"}
+                ]},
+            ],
+           	bigSwitch:false,//控制右侧放大按钮是否显示
+            acLetter:"A",//放大镜要显示的字母
+            acIndex:0,   
+           	letterTime:null,//定时器
         }        
     },
     props:{
@@ -87,6 +79,7 @@ export default {
     },
     methods:{
         selectDepart(index){
+            console.log(index)
         	this.$router.push({
                 path:"/doctorTimeList",
             });
@@ -102,20 +95,37 @@ export default {
         	})
         },
         stop(){
-
+            return false;
         },
-        //选择右侧导航
-        scroll_top(index){
-        	var that=this;
-        	clearTimeout(this.letterTime)
-        	this.acLetter=this.letterList[index]
-        	this.letterTop=-14+index*20
-        	this.bigSwitch=true
-        	this.letterTime=setTimeout(()=>{that.bigSwitch=false},1000)
-        	
+        //选择右侧导航字母  //索引 字母
+        // scroll_touchstart(index,val){
+        //     this.acIndex=index  
+        //     this.acLetter=val   	
+        // },
+        scroll_touchstart(event){
+            console.log(event)	
+        },
+        scroll_touchmove(event){
+            console.log(event)
         }
     },
     mounted:function(){},
+    watch:{
+        //监听字母变化
+        acIndex(val){
+            var that=this;
+            this.bigSwitch=true//显示
+            clearTimeout(this.letterTime)
+            this.letterTime=setTimeout(()=>{that.bigSwitch=false},1000)                 
+        },
+
+    },
+    computed:{
+        //计算高度
+        letterTop(){
+            return this.acIndex*20-14
+        }
+    },
     beforeCreate () {
     	document.querySelector('body').setAttribute('style', 'background-color:#f0f0f0;')
     },
@@ -220,7 +230,7 @@ export default {
 	z-index: 1999;
 	/*background-color: rgba(0,0,0,0.05);*/
 }
-.position_box div{
+.position_box li{
 	width: 20px;
 	height: 20px;
 	border-radius: 10px;

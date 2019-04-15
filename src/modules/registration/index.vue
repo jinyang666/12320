@@ -5,7 +5,6 @@
             <router-view v-if="$route.meta.keepAlive"></router-view>
         </keep-alive>
     </transition>
-    
     <transition :name="transitionName">
         <router-view v-if="!$route.meta.keepAlive"></router-view>
     </transition>
@@ -14,39 +13,43 @@
 
 <script>
 export default {
-  name: 'app',
-  components:{
-      
-  },
-  watch:{
-    "$route"(to,from){
-        const toDepth = to.path.split('/').length
-        const fromDepth = from.path.split('/').length
-        this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+    name: 'app',
+    data(){
+        return{
+            transitionName:"slide-left"
+        }
+    },
+    components:{
+    
+    },
+    watch:{
+    $route(to,from){
+        if(to.meta.index > from.meta.index){
+            this.transitionName = 'slide-left';
+        }else{
+            this.transitionName = 'slide-right';
+        }
+    } 
     }
-  }
 }
 </script>
 
 <style>
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s ease;
+.slide-left-enter-active,.slide-right-enter-active {
+   transition: all .3s ease;
 }
-.fade-enter, .fade-leave-active {
-  opacity: 0;
+.slide-left-leave-active,.slide-right-leave-active {
+   display: none;
+   transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
-.child-view {
-  position: absolute;
-  transition: all .5s cubic-bezier(.55,0,.1,1);
+.slide-left-enter, .slide-left-leave-to
+    /* .slide-fade-leave-active for below version 2.1.8 */ {
+    transform: translateX(100%);
+    opacity: 0;
 }
-.slide-left-enter, .slide-right-leave-active {
-  opacity: 0;
-  -webkit-transform: translate(30px, 0);
-  transform: translate(30px, 0);
-}
-.slide-left-leave-active, .slide-right-enter {
-  opacity: 0;
-  -webkit-transform: translate(-30px, 0);
-  transform: translate(-30px, 0);
+.slide-right-enter, .slide-right-leave-to
+    /* .slide-fade-leave-active for below version 2.1.8 */ {
+    transform: translateX(-100%);
+    opacity: 0;
 }
 </style>

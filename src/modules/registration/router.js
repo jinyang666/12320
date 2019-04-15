@@ -24,24 +24,23 @@ const router=new Router({
           path: '/',component: HospitalList
         },
         {
-          path: '/hospitalList',name:"hospitalList",component: HospitalList,meta: { title: '医院列表',keepAlive:true} 
+          path: '/hospitalList',name:"hospitalList",component: HospitalList,meta: { title: '医院列表',keepAlive:true,index:"1"} 
         },
         {
-          path: '/departList',name:"departList",component: DepartList,meta: { title: '科室列表',keepAlive:true} 
+          path: '/departList',name:"departList",component: DepartList,meta: { title: '科室列表',keepAlive:true,index:"2"} 
         },
         {
-          path: '/hospitalHome',name:"hospitalHome",component: HospitalHome,meta: { title: '医院主页',keepAlive:true} 
+          path: '/hospitalHome',name:"hospitalHome",component: HospitalHome,meta: { title: '医院主页',keepAlive:true,index:"3"} 
         },
         {
-          path: '/searchHospital',name:"searchHospital",component: SearchHospital,meta: { title: '医院搜索',keepAlive:true} 
+          path: '/searchHospital',name:"searchHospital",component: SearchHospital,meta: { title: '医院搜索',keepAlive:true,index:"4"} 
         },
         {
-          path: '/appointRule',name:"appointRule",component: AppointRule,meta: { title: '预约规则',keepAlive:true} 
+          path: '/appointRule',name:"appointRule",component: AppointRule,meta: { title: '预约规则',keepAlive:true,index:"5"} 
         },
         {
-          path: '/DoctorTimeList',name:"DoctorTimeList",component: DoctorTimeList,meta: { title: '医生排班',keepAlive:true} 
+          path: '/DoctorTimeList',name:"DoctorTimeList",component: DoctorTimeList,meta: { title: '医生排班',keepAlive:true,index:"6"} 
         },
-
     ]
 });
 
