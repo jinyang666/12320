@@ -25,11 +25,9 @@
 				<p>{{depart.name}}</p>
 			</li>
 		</ul>	
-		<!--字母列表导航栏-->
-		<div class="position_box" @click.stop="stop" @touchstart="scroll_touchstart($event)" @touchmove="scroll_touchmove($event)">
-            <!-- 右侧字母列表 @touchstart.stop="scroll_touchstart(index,item.letterIndex)" -->
-			<li v-for="(item,index) in departList"  :key="item.index" :class="{'ac':item.letterIndex==acLetter}">{{item.letterIndex}}</li>
-            <!-- 左侧字母放大镜 -->
+		<!-- 右侧导航栏 -->
+		<div class="position_box" @click.stop="stop">
+			<div v-for="(value,index) in letterList" @click.stop="scroll_top(index)" :key="value" :class="{'ac':value==acLetter}">{{value}}</div>
 			<div class="left_big" v-show="bigSwitch" :style="{'top':letterTop+'px'}">
 				{{acLetter}}<span class="triangle_border_right"></span>
 			</div>
@@ -46,32 +44,21 @@ export default {
         	address:"包头",
         	telephone:"110",
             departList:[
-                {letterIndex:"A",list:[
-                    {name:"A科室1",departId:"1"},
-                    {name:"A科室2",departId:"2"},
-                    {name:"A科室3",departId:"3"},
-                    {name:"A科室4",departId:"4"},
-                    {name:"A科室5",departId:"5"}
-                ]},
-                {letterIndex:"B",list:[
-                    {name:"B科室1",departId:"1"},
-                    {name:"B科室2",departId:"2"},
-                    {name:"B科室3",departId:"3"},
-                    {name:"B科室4",departId:"4"},
-                    {name:"B科室5",departId:"5"}
-                ]},
-                {letterIndex:"C",list:[
-                    {name:"C科室1",departId:"1"},
-                    {name:"C科室2",departId:"2"},
-                    {name:"C科室3",departId:"3"},
-                    {name:"C科室4",departId:"4"},
-                    {name:"C科室5",departId:"5"}
-                ]},
-            ],
-           	bigSwitch:false,//控制右侧放大按钮是否显示
-            acLetter:"A",//放大镜要显示的字母
-            acIndex:0,   
-           	letterTime:null,//定时器
+            	{
+            		deptName:"内科",
+            	},
+            	{
+            		deptName:"内科",
+            	},
+            	{
+            		deptName:"内科",
+            	},
+           	],
+           	letterList:['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'],
+           	bigSwitch:false,
+           	acLetter:"A",
+           	letterTime:null,
+           	letterTop:"-14",
         }        
     },
     props:{
